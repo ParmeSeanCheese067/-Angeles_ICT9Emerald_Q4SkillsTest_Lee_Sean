@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Travel Book – Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0d2a4a;
+            --mid-blue: #134074;
+            --muted-blue: #4b80a4;
+            --border: #c8d8e4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #b8d8d8;
+            background-size: cover;
+            background-position: center bottom;
+            background-image: url(sky.png);
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(13,42,74,.18);
+            padding: 60px 80px;
+        }
+
+        .login-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 46px;
+            font-weight: 900;
+            color: #0d2a4a;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted-blue);
+            letter-spacing: 1.6px;
+            margin-bottom: 44px;
+            text-align: center;
+        }
+
+        .form-group { margin-bottom: 24px; }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted-blue);
+            letter-spacing: 1.2px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            color: #0d2a4a;
+            outline: none;
+            background: #fafcfe;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0 16px;
+        }
+
+        .checkbox-row input[type=checkbox] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--navy);
+            cursor: pointer;
+        }
+
+        .checkbox-row span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted-blue);
+        }
+
+        .terms-row {
+            margin-bottom: 36px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 85%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 18px;
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(13,42,74,0.3);
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:active { transform: scale(0.98); }
+
+        footer { text-align: center; padding: 18px; font-size: 14px; font-weight: 700; color: #2a6080; }
+
+       
+    </style>
+</head>
+<body>
+
+<main class="main-container">
+    <div class="card">
+        <div class="login-content">
+            <h1>LOGIN</h1>
+            <div class="subtitle">WELCOME BACK, USER</div>
+
+            <div class="form-group">
+                <label>USERNAME</label>
+                <input type="text" id="userInput" placeholder="Enter Username" required>
+            </div>
+
+            <div class="form-group">
+                <label>PASSWORD</label>
+                <input type="password" id="passInput" placeholder="Enter Password" required>
+            </div>
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="remember">
+                <span>Keep me logged in</span>
+            </div>
+
+            <div class="checkbox-row terms-row">
+                <input type="checkbox" id="termsCheck" required>
+                <span>I agree to the <a href="#" style="color: var(--mid-blue);">Terms of Service</a></span>
+            </div>
+
+            <button class="submit-btn" onclick="validateLogin()">LOGIN</button>
+        </div>
+    </div>
+</main>
+
+<footer>4Q ICT9 PROJECT | Lee, Herrington, Manuntag |</footer>
+
+<script>
+    const CorrectUser = "GROUP10";
+    const CorrectPass = "NOVEMBER10";
+    let attempt = 0;
+    const MaxTry = 3;
+
+    function validateLogin() {
+        const user = document.getElementById('userInput').value;
+        const pass = document.getElementById('passInput').value;
+        const termsChecked = document.getElementById('termsCheck').checked;
+
+      
+        if (user === "" || pass === "") {
+            alert("Please fill in both the username and password fields.");
+            return;
+        }
+        if (attempt >= MaxTry) {
+            alert("Account Locked. Too many failed attempts.");
+            return;
+        }
+        if (!termsChecked) {
+            alert("You must agree to the Terms of Service to log in.");
+            return;
+        }
+        if (user === CorrectUser && pass === CorrectPass) {
+            alert("Welcome!, " + CorrectUser);
+            attempt = 0;
+            sessionStorage.setItem('loggedIn', 'true');
+            window.location.href = 'home.html';
+        } else {
+            attempt++;
+            alert("Access Denied.\nAttempts left: " + (MaxTry - attempt));
+            if (attempt === MaxTry) {
+                alert("Account Locked.");
+                document.getElementById('userInput').disabled = true;
+                document.getElementById('passInput').disabled = true;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
